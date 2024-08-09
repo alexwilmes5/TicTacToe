@@ -1,0 +1,1 @@
+- Dimensions of the background are 24x24 and 800x800
