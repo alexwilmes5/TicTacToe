@@ -119,33 +119,33 @@ def main():
     window_size = (800, 800)
     screen = pg.display.set_mode(window_size)
     pg.display.set_caption('Tic Tac Toe')
-    background_image = pg.image.load('background.png')
-    bluewinscreen = pg.image.load('bluewinscreen.png')
-    redwinscreen = pg.image.load('redwinscreen.jpg')
-    no_winner_screen = pg.image.load('nowinnerscreen.jpg')
+    background_image = pg.image.load('assets/background.png')
+    bluewinscreen = pg.image.load('assets/bluewinscreen.png')
+    redwinscreen = pg.image.load('assets/redwinscreen.jpg')
+    no_winner_screen = pg.image.load('assets/nowinnerscreen.jpg')
     
     #loads and plays music
-    pg.mixer.music.load('tictactoe_music.mp3')
+    pg.mixer.music.load('assets/tictactoe_music.mp3')
     pg.mixer.music.play(-1)
     
     #creates variables for click sounds
-    x_sound = pg.mixer.Sound('x_sound.mp3')
-    o_sound = pg.mixer.Sound('o_sound.mp3')
+    x_sound = pg.mixer.Sound('assets/x_sound.mp3')
+    o_sound = pg.mixer.Sound('assets/o_sound.mp3')
     
     #creates sprites and Group of sprites.
     sprite_size = ((800/24) * 6.5, (800/24) * 6.5)
        
     #initializing sprites and group #see if you can shorten this by the initializing value
     all_sprites = pg.sprite.Group()
-    t1 = Tile('TicTacToeX.png', 'TicTacToeO.png', (35, 35), sprite_size, 0)
-    t2 = Tile('TicTacToeX.png', 'TicTacToeO.png', (290, 35), sprite_size, 1)
-    t3 = Tile('TicTacToeX.png', 'TicTacToeO.png', (547, 35), sprite_size, 2)
-    t4 = Tile('TicTacToeX.png', 'TicTacToeO.png', (35, 290), sprite_size, 3)
-    t5 = Tile('TicTacToeX.png', 'TicTacToeO.png', (290, 290), sprite_size, 4)
-    t6 = Tile('TicTacToeX.png', 'TicTacToeO.png', (547, 290), sprite_size, 5)
-    t7 = Tile('TicTacToeX.png', 'TicTacToeO.png', (35, 547), sprite_size, 6)
-    t8 = Tile('TicTacToeX.png', 'TicTacToeO.png', (290, 547), sprite_size, 7)
-    t9 = Tile('TicTacToeX.png', 'TicTacToeO.png', (547, 547), sprite_size, 8)
+    t1 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 35), sprite_size, 0)
+    t2 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 35), sprite_size, 1)
+    t3 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 35), sprite_size, 2)
+    t4 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 290), sprite_size, 3)
+    t5 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 290), sprite_size, 4)
+    t6 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 290), sprite_size, 5)
+    t7 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 547), sprite_size, 6)
+    t8 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 547), sprite_size, 7)
+    t9 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 547), sprite_size, 8)
     
     #array used for checking tic tac toe combinations
     tiles = [0, 0, 0, 0, 0, 0, 0, 0, 0]
