@@ -150,17 +150,22 @@ def main():
     #array used for checking tic tac toe combinations
     tiles = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+    #sprites are put into list to be easily accessed later
     sprite_list = [t1, t2, t3, t4, t5, t6, t7, t8, t9]
     
+    #turn and running are initialized to start program and have proper X and O drawing
     turn = 0
     running = True
-    while running:
+    
+    while running: #closes window if player exits program
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
                 pg.quit()
+                
             elif event.type == pg.MOUSEBUTTONDOWN: #Checks to see if sprite is clicked and shows if it is.
                 mouse_pos = event.pos 
+                #constantly iterating over all sprites and seeing if they need to be updated
                 for sprite in sprite_list:
                     if sprite.rect.collidepoint(mouse_pos):
                         if sprite.clicked == False:
