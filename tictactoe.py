@@ -4,9 +4,8 @@
 #7/23/2024
 ##############################################################################
 
-#pygame and time modules needed for program to work
+#pygame module needed for program to work
 import pygame as pg
-import time
 
 class Tile(pg.sprite.Sprite): #initializes tile class with images, position and size
     def __init__(self, image_path_x, image_path_o, position, size, index_num):

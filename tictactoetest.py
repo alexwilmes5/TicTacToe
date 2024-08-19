@@ -4,8 +4,8 @@
 #7/23/2024
 ##############################################################################
 
+#pygame and time modules needed for program to work
 import pygame as pg
-import time
 
 class Tile(pg.sprite.Sprite): #initializes tile class with images, position and size
     def __init__(self, image_path_x, image_path_o, position, size, index_num):
@@ -24,92 +24,73 @@ class Tile(pg.sprite.Sprite): #initializes tile class with images, position and 
         if self.clicked == False and turn % 2 == 0:
                 self.clicked = True
                 self.image = self.image_o
-                self.letter = 'o'
-                
+                self.letter = 'o'  
         else:
             self.clicked = True
             self.image = self.image
             self.letter = 'x'
             
-    def get_index(self):
+    def get_index(self): #returns index number of tile to proper update tiles list
         return self.index_num
-        
+
+def create_tiles(all_sprites, sprite_list):
+    positions = [(35, 35), (290, 35), (547, 35), (35, 290), (290, 290), (547, 290), (35, 547), (290, 547), (547, 547)]
+    sprite_size = ((800 / 24) * 6.5, (800 / 24) * 6.5)
+    
+    for i, pos in enumerate(positions):
+        tile = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', pos, sprite_size, i)
+        all_sprites.add(tile)
+        sprite_list.append(tile)
+    
+            
 #Tile class takes image file names as str with position and size
      
 def check_win(tiles, turns): #determines if players have won, lost or tied.
+    winning_positions = ((0, 1, 2), (3, 4, 5), (6, 7, 8), #rows left to right
+                        (0, 3, 6), (1, 4, 7), (2, 5, 8), #rows up and down
+                        (0, 4, 8), (2, 4, 6)) #rows diagonally
     
-    #checks left to right across rows
-    if tiles[0] == 'x' and tiles[1] == 'x' and tiles[2] == 'x':
-        return 'x wins'
-    if tiles[3] == 'x' and tiles[4] == 'x' and tiles[5] == 'x':
-        return 'x wins'
-    if tiles[6] == 'x' and tiles[7] == 'x' and tiles[8] == 'x':
-        return 'x wins'
-    if tiles[0] == 'o' and tiles[1] == 'o' and tiles[2] == 'o':
-        return 'o wins'
-    if tiles[3] == 'o' and tiles[4] == 'o' and tiles[5] == 'o':
-        return 'o wins'
-    if tiles[6] == 'o' and tiles[7] == 'o' and tiles[8] == 'o':
-        return 'o wins'
-    
-    #checks up and down columns
-    if tiles[0] == 'x' and tiles[3] == 'x' and tiles[6] == 'x':
-        return 'x wins'
-    if tiles[1] == 'x' and tiles[4] == 'x' and tiles[7] == 'x':
-        return 'x wins'
-    if tiles[2] == 'x' and tiles[5] == 'x' and tiles[8] == 'x':
-        return 'x wins'
-    if tiles[0] == 'o' and tiles[3] == 'o' and tiles[6] == 'o':
-        return 'o wins'
-    if tiles[1] == 'o' and tiles[4] == 'o' and tiles[7] == 'o':
-        return 'o wins'
-    if tiles[2] == 'o' and tiles[5] == 'o' and tiles[8] == 'o':
-        return 'o wins'
-    
-    #checks diagonally
-    if tiles[0] == 'x' and tiles[4] == 'x' and tiles[8] == 'x':
-        return 'x wins'
-    if tiles[2] == 'x' and tiles[4] == 'x' and tiles[6] == 'x':
-        return 'x wins'
-    if tiles[0] == 'o' and tiles[4] == 'o' and tiles[8] == 'o':
-        return 'o wins'
-    if tiles[2] == 'o' and tiles[4] == 'o' and tiles[6] == 'o':
-        return 'o wins'
-    
-    #checks to see if nobody won
-    elif turns == 9:
-        return 'no winner'
-    else: #string to indicate to keep playing
-        return 'play'
-          
+    for win_pos in winning_positions: #iterates over each tile and checks to see if player has won   
+        if tiles[win_pos[0]] == tiles[win_pos[1]] == tiles[win_pos[2]] and tiles[win_pos[0]] != 0:
+            if tiles[win_pos[0]] == 'x':
+                return 'x wins'
+            elif tiles[win_pos[0]] == 'o':
+                return 'o wins'
+        elif turns == 9: 
+            return 'no winner'
+     
 #func to display game ending screen once game is finished. 
-def end_screen(check_win_var, screen, bluewinscreen, redwinscreen, no_winner_screen, all_sprites): 
-    if check_win_var == 'play': #does not display 
-        return
+def display_end_screen(screen, end_image):
+    running = True
+    while running:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                running = False
+                pg.quit()
+                return
+        screen.blit(end_image, (0, 0))
+        pg.display.flip()
+        pg.time.wait(100)
+ 
+#determines which end screen to display        
+def determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_winner_screen, turn):
+    if check_win_var == 'o wins':
+        pg.time.wait(1000)
+        display_end_screen(screen, redwinscreen)
     elif check_win_var == 'x wins':
-        screen.blit(bluewinscreen, (0, 0))
-        all_sprites.empty()
-        pg.display.flip()
-        time.sleep(4)
-        pg.quit()
-    elif check_win_var == 'o wins':
-        screen.blit(redwinscreen, (0, 0))
-        all_sprites.empty()
-        pg.display.flip()
-        time.sleep(4)
-        pg.quit()
-    elif check_win_var == 'no winner':
-        screen.blit(no_winner_screen, (0, 0))
-        all_sprites.empty()
-        pg.display.flip()
-        time.sleep(4)
-        pg.quit()
-        
-def play_sound(turn, x_sound, o_sound):
-    if turn % 2 == 0:
+        pg.time.wait(1000)
+        display_end_screen(screen, bluewinscreen)
+    elif turn == 9:
+        pg.time.wait(1000)
+        display_end_screen(screen, no_winner_screen)
+    else:
+        return
+                
+def play_sound(turn, x_sound, o_sound): #plays sound when player clicks
+    if turn % 2 == 0: #the sound that is played is determined by players turn
         o_sound.set_volume(1.5)
         o_sound.play()
-    else:
+    else: 
         x_sound.set_volume(1.5)
         x_sound.play()
         
@@ -132,26 +113,16 @@ def main():
     x_sound = pg.mixer.Sound('assets/x_sound.mp3')
     o_sound = pg.mixer.Sound('assets/o_sound.mp3')
     
-    #creates sprites and Group of sprites.
-    sprite_size = ((800/24) * 6.5, (800/24) * 6.5)
+    
+    sprite_list = [] #placeholder until i access it again later
        
     #initializing sprites and group #see if you can shorten this by the initializing value
     all_sprites = pg.sprite.Group()
-    t1 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 35), sprite_size, 0)
-    t2 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 35), sprite_size, 1)
-    t3 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 35), sprite_size, 2)
-    t4 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 290), sprite_size, 3)
-    t5 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 290), sprite_size, 4)
-    t6 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 290), sprite_size, 5)
-    t7 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 547), sprite_size, 6)
-    t8 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 547), sprite_size, 7)
-    t9 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 547), sprite_size, 8)
     
     #array used for checking tic tac toe combinations
-    tiles = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    tiles = [0] * 9 
 
     #sprites are put into list to be easily accessed later
-    sprite_list = [t1, t2, t3, t4, t5, t6, t7, t8, t9]
     
     #turn and running are initialized to start program and have proper X and O drawing
     turn = 0
@@ -182,14 +153,10 @@ def main():
         screen.blit(background_image, (0, 0))
         all_sprites.draw(screen)
         pg.display.flip()
-        
-        if check_win_var != 'play': #creates delay to make final tile placement appear before end screen
-            time.sleep(1)
-        
+
         #outputs end screen
-        end_screen(check_win_var, screen, bluewinscreen, redwinscreen, no_winner_screen, all_sprites)
-       
-  
+        determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_winner_screen, turn)
+             
 if __name__ == "__main__":
     main()
     
