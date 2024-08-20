@@ -4,7 +4,7 @@
 #7/23/2024
 ##############################################################################
 
-#pygame and time modules needed for program to work
+#pygame module needed for program to work
 import pygame as pg
 
 class Tile(pg.sprite.Sprite): #initializes tile class with images, position and size
@@ -32,17 +32,7 @@ class Tile(pg.sprite.Sprite): #initializes tile class with images, position and 
             
     def get_index(self): #returns index number of tile to proper update tiles list
         return self.index_num
-
-def create_tiles(all_sprites, sprite_list):
-    positions = [(35, 35), (290, 35), (547, 35), (35, 290), (290, 290), (547, 290), (35, 547), (290, 547), (547, 547)]
-    sprite_size = ((800 / 24) * 6.5, (800 / 24) * 6.5)
-    
-    for i, pos in enumerate(positions):
-        tile = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', pos, sprite_size, i)
-        all_sprites.add(tile)
-        sprite_list.append(tile)
-    
-            
+        
 #Tile class takes image file names as str with position and size
      
 def check_win(tiles, turns): #determines if players have won, lost or tied.
@@ -113,16 +103,26 @@ def main():
     x_sound = pg.mixer.Sound('assets/x_sound.mp3')
     o_sound = pg.mixer.Sound('assets/o_sound.mp3')
     
-    
-    sprite_list = [] #placeholder until i access it again later
+    #creates sprites and Group of sprites.
+    sprite_size = ((800/24) * 6.5, (800/24) * 6.5)
        
     #initializing sprites and group #see if you can shorten this by the initializing value
     all_sprites = pg.sprite.Group()
+    t1 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 35), sprite_size, 0)
+    t2 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 35), sprite_size, 1)
+    t3 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 35), sprite_size, 2)
+    t4 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 290), sprite_size, 3)
+    t5 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 290), sprite_size, 4)
+    t6 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 290), sprite_size, 5)
+    t7 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 547), sprite_size, 6)
+    t8 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 547), sprite_size, 7)
+    t9 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 547), sprite_size, 8)
     
     #array used for checking tic tac toe combinations
     tiles = [0] * 9 
 
     #sprites are put into list to be easily accessed later
+    sprite_list = [t1, t2, t3, t4, t5, t6, t7, t8, t9]
     
     #turn and running are initialized to start program and have proper X and O drawing
     turn = 0

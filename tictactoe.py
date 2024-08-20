@@ -32,8 +32,6 @@ class Tile(pg.sprite.Sprite): #initializes tile class with images, position and 
             
     def get_index(self): #returns index number of tile to proper update tiles list
         return self.index_num
-        
-#Tile class takes image file names as str with position and size
      
 def check_win(tiles, turns): #determines if players have won, lost or tied.
     winning_positions = ((0, 1, 2), (3, 4, 5), (6, 7, 8), #rows left to right
@@ -92,8 +90,8 @@ def main():
     pg.display.set_caption('Tic Tac Toe')
     background_image = pg.image.load('assets/background.png')
     bluewinscreen = pg.image.load('assets/bluewinscreen.png')
-    redwinscreen = pg.image.load('assets/redwinscreen.jpg')
-    no_winner_screen = pg.image.load('assets/nowinnerscreen.jpg')
+    redwinscreen = pg.image.load('assets/redwinscreen.png')
+    no_winner_screen = pg.image.load('assets/nowinnerscreen.png')
     
     #loads and plays music
     pg.mixer.music.load('assets/tictactoe_music.mp3')
@@ -145,7 +143,6 @@ def main():
                             turn += 1
                             sprite.update(turn)
                             tiles[sprite.get_index()] = sprite.letter
-                            print(tiles)
                             break
                         
         #updates screen 
