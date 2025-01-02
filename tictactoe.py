@@ -7,7 +7,7 @@
 #pygame module needed for program to work
 import pygame as pg
 
-class Tile(pg.sprite.Sprite): #initializes tile class with images, position and size
+class Tile(pg.sprite.Sprite): #initializes tile class with images, position, index_num, 
     def __init__(self, image_path_x, image_path_o, position, size, index_num):
         super().__init__()
         self.image = pg.image.load(image_path_x)
@@ -102,7 +102,7 @@ def main():
     o_sound = pg.mixer.Sound('assets/o_sound.mp3')
     
     #creates sprites and Group of sprites.
-    sprite_size = ((800/24) * 6.5, (800/24) * 6.5)
+    sprite_size = ((800/24) * 6.6, (800/24) * 6.6)
        
     #initializing sprites and group #see if you can shorten this by the initializing value
     all_sprites = pg.sprite.Group()
