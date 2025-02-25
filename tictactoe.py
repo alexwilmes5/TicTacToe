@@ -32,7 +32,7 @@ class Tile(pg.sprite.Sprite): #initializes tile class with images, position and 
             
     def get_index(self): #returns index number of tile to proper update tiles list
         return self.index_num
-     
+    
 def check_win(tiles, turns): #determines if players have won, lost or tied.
     winning_positions = ((0, 1, 2), (3, 4, 5), (6, 7, 8), #rows left to right
                         (0, 3, 6), (1, 4, 7), (2, 5, 8), #rows up and down
@@ -82,6 +82,23 @@ def play_sound(turn, x_sound, o_sound): #plays sound when player clicks
         x_sound.set_volume(1.5)
         x_sound.play()
         
+def display_start_screen(screen, start_screen, startbutton):
+    running = True
+    all_sprites = pg.sprite.Group()
+    while running:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                return False
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                if startbutton.rect.collidepoint(mouse_pos):
+                    return True
+        all_sprites.add(startbutton)
+        screen.blit(start_screen, (0, 0))
+        all_sprites.draw(screen)
+        pg.display.flip()
+        
 def main():
     pg.init() #initializes pygame, creates window, background and images used for win screen).
     pg.mixer.init() #initializes mixer for music
@@ -92,6 +109,7 @@ def main():
     bluewinscreen = pg.image.load('assets/bluewinscreen.png')
     redwinscreen = pg.image.load('assets/redwinscreen.png')
     no_winner_screen = pg.image.load('assets/nowinnerscreen.png')
+    start_screen = pg.image.load('assets/start_screen.jpg')
     
     #loads and plays music
     pg.mixer.music.load('assets/tictactoe_music.mp3')
@@ -115,7 +133,8 @@ def main():
     t7 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 547), sprite_size, 6)
     t8 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 547), sprite_size, 7)
     t9 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 547), sprite_size, 8)
-    
+    startbutton = Tile('assets/start_button.png', 'assets/start_button.png', (160, 250), (466, 400), None)
+        
     #array used for checking tic tac toe combinations
     tiles = [0] * 9 
 
@@ -126,12 +145,17 @@ def main():
     turn = 0
     running = True
     
+    if not display_start_screen(screen, start_screen, startbutton):
+        return
+
+     
     while running: #closes window if player exits program
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
                 pg.quit()
                 
+            
             elif event.type == pg.MOUSEBUTTONDOWN: #Checks to see if sprite is clicked and shows if it is.
                 mouse_pos = event.pos 
                 #constantly iterating over all sprites and seeing if they need to be updated
