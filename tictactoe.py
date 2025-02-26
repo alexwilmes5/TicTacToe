@@ -33,6 +33,9 @@ class Tile(pg.sprite.Sprite): #initializes tile class with images, position, ind
     def get_index(self): #returns index number of tile to proper update tiles list
         return self.index_num
     
+    def set_transparency(self, alpha):
+        self.image.set_alpha(alpha)
+    
 def check_win(tiles, turns): #determines if players have won, lost or tied.
     winning_positions = ((0, 1, 2), (3, 4, 5), (6, 7, 8), #rows left to right
                         (0, 3, 6), (1, 4, 7), (2, 5, 8), #rows up and down
@@ -58,7 +61,6 @@ def display_end_screen(screen, end_image):
                 return
         screen.blit(end_image, (0, 0))
         pg.display.flip()
-        pg.time.wait(100)
  
 #determines which end screen to display        
 def determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_winner_screen, turn):
@@ -72,7 +74,7 @@ def determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_w
         pg.time.wait(1000)
         display_end_screen(screen, no_winner_screen)
     else:
-        return
+        return 'play'
                 
 def play_sound(turn, x_sound, o_sound): #plays sound when player clicks
     if turn % 2 == 0: #the sound that is played is determined by players turn
@@ -81,23 +83,34 @@ def play_sound(turn, x_sound, o_sound): #plays sound when player clicks
     else: 
         x_sound.set_volume(1.5)
         x_sound.play()
-        
-def display_start_screen(screen, start_screen, startbutton):
+                
+#displays starting screen and overlays star button image
+def display_start_screen(screen, start_screen, startbutton, o_sound):
     running = True
     all_sprites = pg.sprite.Group()
     while running:
         for event in pg.event.get():
+            hover(startbutton)
             if event.type == pg.QUIT:
                 pg.quit()
                 return False
             elif event.type == pg.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 if startbutton.rect.collidepoint(mouse_pos):
+                    o_sound.set_volume(1.5)
+                    o_sound.play()
                     return True
         all_sprites.add(startbutton)
         screen.blit(start_screen, (0, 0))
         all_sprites.draw(screen)
         pg.display.flip()
+        
+def hover(startbutton):
+    mouse_pos = pg.mouse.get_pos()
+    if startbutton.rect.collidepoint(mouse_pos):
+        startbutton.set_transparency(128)
+    else:
+        startbutton.set_transparency(255)
         
 def main():
     pg.init() #initializes pygame, creates window, background and images used for win screen).
@@ -133,7 +146,7 @@ def main():
     t7 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (35, 547), sprite_size, 6)
     t8 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (290, 547), sprite_size, 7)
     t9 = Tile('assets/TicTacToeX.png', 'assets/TicTacToeO.png', (547, 547), sprite_size, 8)
-    startbutton = Tile('assets/start_button.png', 'assets/start_button.png', (160, 250), (466, 400), None)
+    startbutton = Tile('assets/start_button.png', 'assets/start_button.png', (175, 325), (450, 250), None)
         
     #array used for checking tic tac toe combinations
     tiles = [0] * 9 
@@ -145,17 +158,16 @@ def main():
     turn = 0
     running = True
     
-    if not display_start_screen(screen, start_screen, startbutton):
+    #displays start screen
+    if not display_start_screen(screen, start_screen, startbutton, o_sound):
         return
-
-     
+    
     while running: #closes window if player exits program
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
                 pg.quit()
                 
-            
             elif event.type == pg.MOUSEBUTTONDOWN: #Checks to see if sprite is clicked and shows if it is.
                 mouse_pos = event.pos 
                 #constantly iterating over all sprites and seeing if they need to be updated
@@ -177,6 +189,7 @@ def main():
 
         #outputs end screen
         determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_winner_screen, turn)
+            
              
 if __name__ == "__main__":
     main()
