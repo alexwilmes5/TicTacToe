@@ -191,16 +191,7 @@ def main():
         pg.display.flip()
         
         determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_winner_screen, turn) 
-    
-            
-        
-   
-               
-        
-        
-            
-             
+
 if __name__ == "__main__":
     main()
-    
     
