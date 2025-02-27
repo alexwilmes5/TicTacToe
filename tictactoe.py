@@ -43,12 +43,14 @@ def check_win(tiles, turns): #determines if players have won, lost or tied.
     
     for win_pos in winning_positions: #iterates over each tile and checks to see if player has won   
         if tiles[win_pos[0]] == tiles[win_pos[1]] == tiles[win_pos[2]] and tiles[win_pos[0]] != 0:
-            if tiles[win_pos[0]] == 'x':
+            if tiles[win_pos[0]] == tiles[win_pos[1]] == tiles[win_pos[2]] == 'x':
                 return 'x wins'
-            elif tiles[win_pos[0]] == 'o':
+            elif tiles[win_pos[0]] == tiles[win_pos[1]] == tiles[win_pos[2]] == 'o':
                 return 'o wins'
         elif turns == 9: 
             return 'no winner'
+        
+    
      
 #func to display game ending screen once game is finished. 
 def display_end_screen(screen, end_image):
@@ -61,7 +63,7 @@ def display_end_screen(screen, end_image):
                 return
         screen.blit(end_image, (0, 0))
         pg.display.flip()
- 
+
 #determines which end screen to display        
 def determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_winner_screen, turn):
     if check_win_var == 'o wins':
@@ -162,7 +164,8 @@ def main():
     if not display_start_screen(screen, start_screen, startbutton, o_sound):
         return
     
-    while running: #closes window if player exits program
+    while running:
+        #closes window if player exits program
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
@@ -186,9 +189,15 @@ def main():
         screen.blit(background_image, (0, 0))
         all_sprites.draw(screen)
         pg.display.flip()
-
-        #outputs end screen
-        determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_winner_screen, turn)
+        
+        determine_endscreen(check_win_var, screen, redwinscreen, bluewinscreen, no_winner_screen, turn) 
+    
+            
+        
+   
+               
+        
+        
             
              
 if __name__ == "__main__":
